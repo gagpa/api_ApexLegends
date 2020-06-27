@@ -10,6 +10,9 @@ def create_app(config_name):
     config = main_configs[config_name]
     app.config.from_object(config)
 
+    from .api_apex import api_apex
+    app.register_blueprint(api_apex, url_prefix='/api_apex/v1')
+
     return app
 
 
