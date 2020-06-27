@@ -2,23 +2,27 @@ import requests
 import os
 
 
-def parse_api_apex():
+def parse_api_apex() -> dict:
     response = requests.get(os.environ.get('API_PLAYER_INFO'))
     if response.status_code == 200:
         return response.json()
 
 
-def get_total_kills():
+def total_kills() -> int:
     data = parse_api_apex()
     if data:
-        current_kills = data['total']['kills']['value']
-        return current_kills
+        total = data['total']['kills']['value']
+        return int(total)
 
 
-def get_delta_kills(prev_kills, total_kills_mod=True):
-    total_kills = get_total_kills()
-    delta_kills = total_kills - prev_kills
-    if total_kills_mod:
-        return delta_kills, total_kills
+def current_kills(prev_kills: int, init: bool = False, return_total: bool = True) -> int or tuple:
+    total = total_kills()
+    if init:
+        curr_kills = 0
+    else:
+        curr_kills = total - prev_kills
 
-    return delta_kills
+    if return_total:
+        return curr_kills, total
+
+    return curr_kills
