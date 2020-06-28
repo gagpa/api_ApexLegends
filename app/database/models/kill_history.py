@@ -1,5 +1,5 @@
-from .base import Base
 from app.database import db
+from .base import Base
 
 
 class KillHistory(Base):

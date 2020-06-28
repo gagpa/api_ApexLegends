@@ -1,10 +1,10 @@
 import os
 
 from flask import Flask
+from flask_migrate import Migrate
 
 from configs import main_configs
 from .database import db
-from flask_migrate import Migrate
 
 
 def create_app(config_name):

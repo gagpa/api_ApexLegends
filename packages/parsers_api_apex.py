@@ -1,5 +1,6 @@
-import requests
 import os
+
+import requests
 
 
 def parse_api_apex() -> dict:

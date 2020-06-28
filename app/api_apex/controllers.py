@@ -1,9 +1,11 @@
-from . import api_apex
+from datetime import datetime
+
+from flask import jsonify, render_template
+
+from app.database.models import KillHistory
 from packages.parsers_api_apex import current_kills as func_current_kills
 from packages.parsers_api_apex import total_kills as func_total_kills
-from flask import jsonify
-from datetime import datetime
-from app.database.models import KillHistory
+from . import api_apex
 
 
 @api_apex.route('/stat_kills')
@@ -12,7 +14,7 @@ def statistics_kills():
 
     if total_kills:
         curr_kills, curr_total = func_current_kills(total_kills)
-        return jsonify({'status': True,
+        return jsonify({'success': True,
                         'data':
                             {
                                 'total_kills': curr_total,
@@ -20,7 +22,12 @@ def statistics_kills():
                             }
                         })
 
-    return jsonify({'status': False})
+    return jsonify({'success': False})
+
+
+@api_apex.route('/')
+def index():
+    return render_template('api_apex/index.html')
 
 
 @api_apex.route('/stat_kills/start')
@@ -29,9 +36,12 @@ def start_statistics_kills():
     record = KillHistory.init_table(total_kills=curr_total, time_stamp=datetime.now())
 
     if record:
-        return jsonify({'status': True,
-                        'total_kills': record.total_kills,
-                        'time': record.time_stamp,
+        return jsonify({'success': True,
+                        'data':
+                            {
+                                'total_kills': record.total_kills,
+                                'time': record.time_stamp,
+                            }
                         })
 
-    return jsonify(({'status': False}))
+    return jsonify(({'success': False}))

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        #frame {
+            background: url("{{ url_for('static', filename='bar_statkills.png') }}") no-repeat;
+            height: 30px;
+            position: absolute;
+            width: 192px;
+        }
+        #current {
+            left: 38px;
+            position: absolute;
+            top: 6px;
+            color: #fff;
+            font-weight: bold;
+        }
+        #total {
+            color: #000;
+            left: 105px;
+            position: absolute;
+            top: 6px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="frame">
+        <span id="current">0</span>
+        <span id="total">0</span>
+    </div>
+    <script>
+        $(document).ready(function() {
+            let $total = $('#total');
+            let $current = $('#current');
+
+            setInterval(updateStats, 2000);
+
+            function updateStats()
+            {
+                $.getJSON('stat_kills', function(json) {
+                    $total.text(json.data.total_kills);
+                    $current.text(json.data.curr_kills);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
