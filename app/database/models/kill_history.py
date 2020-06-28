@@ -17,18 +17,12 @@ class KillHistory(Base):
             return total
 
     @classmethod
-    def create_or_update(cls, select, insert, init_mode):
-        record = db.session.query(cls).filter_by(**select).first()
-
-        if init_mode and record:
+    def init_table(cls, **select):
+        if cls.query.first():
             for record in cls.query.all():
                 db.session.delete(record)
             db.session.commit()
-            record = None
-        if record:
-            cls.update_record(record, **select, **insert)
-        else:
-            record = cls.create(**select, **insert)
+        record = cls.create(**select)
         return record
 
     @classmethod
