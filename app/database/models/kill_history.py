@@ -33,8 +33,9 @@ class KillHistory(Base):
         return record
 
     @classmethod
-    def update_record(cls, record, **insert):
+    def update_record(cls, record=None, **insert):
         status_update = False
+        record = record or cls.query.first()
         for key, value in insert.items():
             if getattr(record, key) != value:
                 print(key, getattr(record, key))
@@ -43,3 +44,4 @@ class KillHistory(Base):
         if status_update:
             db.session.add(record)
             db.session.commit()
+        return record

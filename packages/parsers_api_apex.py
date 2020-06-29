@@ -9,6 +9,17 @@ def parse_api_apex() -> dict:
         return response.json()
 
 
+def change_total_kills(sign: str, value: int, old_total: int) -> int:
+    if sign == '+':
+        new_total = old_total - value
+    else:
+        new_total = old_total + value
+
+    if new_total < 0:
+        new_total = 0
+    return new_total
+
+
 def total_kills() -> int:
     data = parse_api_apex()
     if data:
